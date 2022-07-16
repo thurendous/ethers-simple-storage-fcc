@@ -5,21 +5,22 @@ require("dotenv").config()
 async function main() {
     // connetion with the blockchain
     const provider = new ethers.providers.JsonRpcProvider(
-        process.env.RPC_URL
+        process.env.RINKEBY_RPC
     )
     // wallet with a private key
     // console.log(process.env.PRIVATE_KEY)
-    // const wallet = new ethers.Wallet(
-    //     process.env.PRIVATE_KEY,
-    //     provider
-    // )
+    const wallet = new ethers.Wallet(
+        process.env.PRIVATE_KEY,
+        provider
+    )
     
     // using a new way to create secure wallet
     // console.log(process.env.PRIVATE_KEY)
     const abi = fs.readFileSync('./SimpleStorage_sol_SimpleStorage.abi', 'utf8')
     const encryptedJson = fs.readFileSync("./encryptedKey.json", "utf8")
-    let wallet = new ethers.Wallet.fromEncryptedJsonSync(encryptedJson, process.env.PW)
-    wallet = await wallet.connect(provider)
+    // let wallet = new ethers.Wallet.fromEncryptedJsonSync(encryptedJson, process.env.PW)
+    // wallet = await wallet.connect(provider)
+    console.log(wallet.address)
     
     // deploy with inside functions
     const binary = fs.readFileSync(
@@ -30,6 +31,7 @@ async function main() {
     console.log("Deploying, please wait ....")
     const contract = await contractFactory.deploy({})
     const deploymentReceipt = await contract.deployTransaction.wait(1)
+        console.log(`contract address ${contract.address}`)
     // console.log("Here is the deployment transaction:(transaction response) ")
     // console.log(contract.deployTransaction)
     // -> transaction receipt is what you get for waiting for the block confirmation
