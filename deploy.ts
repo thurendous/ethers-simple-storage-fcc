@@ -1,16 +1,20 @@
-const ethers = require('ethers')
-const fs = require('fs-extra') // to read files
-require("dotenv").config()
+// const ethers = require('ethers')
+// const fs = require('fs-extra') // to read files
+// require("dotenv").config()
+
+import {ethers} from "ethers"
+import * as fs from "fs-extra"
+import "dotenv/config"
 
 async function main() {
     // connetion with the blockchain
     const provider = new ethers.providers.JsonRpcProvider(
-        process.env.RINKEBY_RPC
+        process.env.RINKEBY_RPC!
     )
     // wallet with a private key
     // console.log(process.env.PRIVATE_KEY)
     const wallet = new ethers.Wallet(
-        process.env.PRIVATE_KEY,
+        process.env.PRIVATE_KEY!,
         provider
     )
     
